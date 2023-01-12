@@ -7,13 +7,18 @@ use Illuminate\Contracts\Validation\Rule;
 class MinSpecialCharsRule implements Rule
 {
     /**
+     * @var int
+     */
+    private int $minSpecialChars;
+
+    /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($minSpecialChars)
     {
-        //
+        $this->minSpecialChars = $minSpecialChars;
     }
 
     /**
@@ -25,7 +30,7 @@ class MinSpecialCharsRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        //
+        return preg_match_all( "/[^A-Za-z0-9]/", $value) >= 2;
     }
 
     /**
@@ -35,6 +40,6 @@ class MinSpecialCharsRule implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'minSpecialChars';
     }
 }
