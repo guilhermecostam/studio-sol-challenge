@@ -7,13 +7,18 @@ use Illuminate\Contracts\Validation\Rule;
 class MinUppercaseRule implements Rule
 {
     /**
+     * @var int
+     */
+    private int $minUppercase;
+
+    /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($minUppercase)
     {
-        //
+        $this->minUppercase = $minUppercase;
     }
 
     /**
@@ -25,7 +30,7 @@ class MinUppercaseRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        //
+        return preg_match('/[A-Z]/', $value);
     }
 
     /**
@@ -35,6 +40,6 @@ class MinUppercaseRule implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'minUppercase';
     }
 }
