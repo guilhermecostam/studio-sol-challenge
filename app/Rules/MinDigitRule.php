@@ -7,13 +7,18 @@ use Illuminate\Contracts\Validation\Rule;
 class MinDigitRule implements Rule
 {
     /**
+     * @var int
+     */
+    private int $minDigit;
+
+    /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($minDigit)
     {
-        //
+        $this->minDigit = $minDigit;
     }
 
     /**
@@ -25,7 +30,7 @@ class MinDigitRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        //
+        return preg_match_all( "/[0-9]/", $value) >= 4;
     }
 
     /**
@@ -35,6 +40,6 @@ class MinDigitRule implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'minDigit';
     }
 }
