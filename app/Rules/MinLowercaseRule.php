@@ -7,13 +7,18 @@ use Illuminate\Contracts\Validation\Rule;
 class MinLowercaseRule implements Rule
 {
     /**
+     * @var int
+     */
+    private int $minLowercase;
+
+    /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($minLowercase)
     {
-        //
+        $this->minLowercase = $minLowercase;
     }
 
     /**
@@ -25,7 +30,7 @@ class MinLowercaseRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        //
+        return preg_match('/[a-z]/', $value);
     }
 
     /**
@@ -35,6 +40,6 @@ class MinLowercaseRule implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'minLowercase';
     }
 }
