@@ -20,15 +20,18 @@ class VerifyController extends Controller
      * @param VerifyFormRequest $request
      * @return VerifyResource
      */
-    public function logout(VerifyFormRequest $request)
+    public function verify(VerifyFormRequest $request)
     {
         try {
-            $this->response = $request;
+            $this->response = $request->all();
+            if (!$this->response['verify']) {
+                $this->statusCode = Response::HTTP_BAD_REQUEST;
+            }
         } catch (Throwable $e) {
             Log::error(__CLASS__ . '::' . __FUNCTION__ . ', ' . $e->getMessage());
 
             $this->response = [
-                'message' => [trans('validation.bad_request')]
+                'message' => trans('validation.bad_request')
             ];
             $this->statusCode = Response::HTTP_BAD_REQUEST;
         }
