@@ -107,4 +107,21 @@ class VerifyPasswordTest extends TestCase
         $this->assertContains('noRepeted', $response->json()['match']);
         $this->assertFalse($response->json()['verify']);
     }
+
+    /**
+     * Tests if the min numeric digits validation works correctly
+     * and verify is false, status code must be 400.
+     *
+     * @return void
+     */
+    public function testMinDigitValidationWorks()
+    {
+        $response = $this->post(self::VERIFY_ROUTE, [
+            'password' => 'TTest'
+        ]);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $this->assertContains('minDigit', $response->json()['match']);
+        $this->assertFalse($response->json()['verify']);
+    }
 }
