@@ -7,16 +7,6 @@ use Illuminate\Contracts\Validation\Rule;
 class NoRepetedRule implements Rule
 {
     /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Determine if the validation rule passes.
      *
      * @param  string  $attribute
@@ -25,7 +15,14 @@ class NoRepetedRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        //
+        $passLenght = strlen($value);
+        for ($i=0; $i < $passLenght-1; $i++) {
+            if ($value[$i] == $value[$i+1]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -35,6 +32,6 @@ class NoRepetedRule implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'noRepeted';
     }
 }
