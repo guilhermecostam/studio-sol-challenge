@@ -1,0 +1,112 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Studio Sol Challenge",
+        "description": "Challenge developed to apply for a position at Studio Sol.",
+        "contact": {
+            "email": "guilhermecostadev@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/app": {},
+        "/api/verify": {
+            "post": {
+                "tags": [
+                    "verify"
+                ],
+                "description": "Method that verify if password is valid.",
+                "operationId": "verify",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "password": {
+                                        "description": "Typed password",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns the rules, password and errors.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VerifyResource"
+                                }
+                            }
+                        }
+                    },
+                    "402": {
+                        "description": "Error validating sent data."
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "VerifyResource": {
+                "title": "Verify",
+                "description": "Password verify data",
+                "type": "object",
+                "oneOf": [
+                    {
+                        "schema": "Verify",
+                        "title": "Verify",
+                        "properties": {
+                            "password": {
+                                "description": "Typed password",
+                                "type": "string",
+                                "format": "string",
+                                "example": "123456"
+                            },
+                            "rules": {
+                                "description": "All rules of the validation",
+                                "format": "array"
+                            },
+                            "verify": {
+                                "description": "Password is valid",
+                                "type": "boolean",
+                                "format": "boolean",
+                                "example": "true"
+                            },
+                            "match": {
+                                "description": "Rules that the password did not pass",
+                                "type": "array",
+                                "format": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "example": [
+                                    "minDigits",
+                                    "noRepeat"
+                                ]
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "verify",
+            "description": "Methods to verify password"
+        }
+    ]
+}

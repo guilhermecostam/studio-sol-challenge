@@ -15,11 +15,38 @@ class VerifyController extends Controller
     private int $statusCode = Response::HTTP_OK;
 
     /**
-     * Method that verify if password is valid.
-     *
-     * @param VerifyFormRequest $request
-     * @return VerifyResource
-     */
+    *
+    *  @OA\Post(
+    *      path="/api/verify",
+    *      tags={"verify"},
+    *      operationId="verify",
+    *      description="Method that verify if password is valid.",
+    *      @OA\RequestBody(
+    *          required=true,
+    *          @OA\MediaType(
+    *              mediaType="application/json",
+    *              @OA\Schema(
+    *                  @OA\Property(
+    *                      property="password",
+    *                      description="Typed password",
+    *                      format="string",
+    *                      type="string",
+    *                      example="123456",
+    *                  ),
+    *              ),
+    *          ),
+    *      ),
+    *      @OA\Response(
+    *          response=200,
+    *          description="Returns the rules, password and errors.",
+    *          @OA\JsonContent(ref="#/components/schemas/VerifyResource")
+    *      ),
+    *      @OA\Response(
+    *          response=402,
+    *          description="Error validating sent data."
+    *      ),
+    *  ),
+    */
     public function verify(VerifyFormRequest $request)
     {
         try {
