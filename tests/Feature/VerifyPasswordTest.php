@@ -73,4 +73,21 @@ class VerifyPasswordTest extends TestCase
         $this->assertContains('minSize', $response->json()['match']);
         $this->assertFalse($response->json()['verify']);
     }
+
+    /**
+     * Tests if the min special chars validation works correctly
+     * and verify is false, status code must be 400.
+     *
+     * @return void
+     */
+    public function testMinSpecialCharsValidationWorks()
+    {
+        $response = $this->post(self::VERIFY_ROUTE, [
+            'password' => 'Test'
+        ]);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $this->assertContains('minSpecialChars', $response->json()['match']);
+        $this->assertFalse($response->json()['verify']);
+    }
 }
