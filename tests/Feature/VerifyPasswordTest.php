@@ -33,5 +33,29 @@ class VerifyPasswordTest extends TestCase
             ],
         ]);
     }
+    /**
+     * Tests if the types returned are as expected.
+     * 
+     * @return void
+     */
+    public function testTypesDataAreAsExpected()
+    {
+        $response = $this->post(self::VERIFY_ROUTE, [
+            'password' => 'Test_1234*'
+        ]);
+        $response->assertOk();
+
+        $response->assertJson(
+            fn (AssertableJson $json) => $json->whereAllType([
+                'password' => 'string',
+                'rules' => 'array',
+                'rules.0.rule' => 'string',
+                'rules.0.value' => 'integer',
+                'verify' => 'boolean',
+                'match' => 'array'
+            ])
+        );
+    }
+
 
 }
