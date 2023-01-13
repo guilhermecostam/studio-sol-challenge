@@ -14,6 +14,24 @@ class VerifyResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        if (! empty($this->resource)) {
+            $rules = [];
+            foreach ($this->resource['rules'] as $key => $value) {
+                $rules[] = [
+                    'rule' => $key,
+                    'value' => $value
+                ];
+            }
+
+            return [
+                'password' => $this->resource['password'] ?? null,
+                'rules' => $rules,
+                'verify' => $this->resource['verify'],
+                'match' => $this->resource['match']
+            ];
+        } else {
+            return $this->resource;
+        }
+
     }
 }
