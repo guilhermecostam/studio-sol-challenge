@@ -85,4 +85,20 @@ class VerifyPasswordTest extends TestCase
         $this->assertContains('minLowercase', $response->json()['match']);
         $this->assertFalse($response->json()['verify']);
     }
+
+    /**
+     * Tests if valid password passed the validations, status code must be 200.
+     *
+     * @return void
+     */
+    public function testValidPasswordPassesValidations()
+    {
+        $response = $this->post(self::VERIFY_ROUTE, [
+            'password' => 'Test-1234*' // valid password
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertTrue($response->json()['verify']);
+        $this->assertEmpty($response->json()['match']);
+    }
 }
