@@ -57,5 +57,20 @@ class VerifyPasswordTest extends TestCase
         );
     }
 
+    /**
+     * Tests if the min size validation works correctly
+     * and verify is false, status code must be 400.
+     *
+     * @return void
+     */
+    public function testMinSizeValidationWorks()
+    {
+        $response = $this->post(self::VERIFY_ROUTE, [
+            'password' => 'Test'
+        ]);
 
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $this->assertContains('minSize', $response->json()['match']);
+        $this->assertFalse($response->json()['verify']);
+    }
 }
