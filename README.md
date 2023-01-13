@@ -39,6 +39,8 @@ $ sail up -d
 
 To use Swagger, simply access the url `/api/documentation` from your localhost
 
+To running the tests, just run this command `php artisan test`.
+
 ---
 
 Made with :zap: by Guilherme Costa. [Get in touch!](https://www.linkedin.com/in/guilhermecostam/)
