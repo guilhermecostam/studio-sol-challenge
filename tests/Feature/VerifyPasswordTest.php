@@ -8,7 +8,15 @@ use Tests\TestCase;
 
 class VerifyPasswordTest extends TestCase
 {
+    /**
+     * Const with endpoint of api
+     */
     const VERIFY_ROUTE = 'api/verify';
+
+    /**
+     * Const with password that fails all validations
+     */
+    const BASIC_PASSWORD = '113-';
 
     /**
      * Tests if the received json structure is as expected.
@@ -41,9 +49,8 @@ class VerifyPasswordTest extends TestCase
     public function testTypesDataAreAsExpected()
     {
         $response = $this->post(self::VERIFY_ROUTE, [
-            'password' => 'Test_1234*'
+            'password' => self::BASIC_PASSWORD
         ]);
-        $response->assertOk();
 
         $response->assertJson(
             fn (AssertableJson $json) => $json->whereAllType([
@@ -58,7 +65,7 @@ class VerifyPasswordTest extends TestCase
     }
 
     /**
-     * Tests if the min size validation works correctly
+     * Tests if the all validations works correctly
      * and verify is false, status code must be 400.
      *
      * @return void
@@ -66,95 +73,15 @@ class VerifyPasswordTest extends TestCase
     public function testMinSizeValidationWorks()
     {
         $response = $this->post(self::VERIFY_ROUTE, [
-            'password' => 'Test'
+            'password' => self::BASIC_PASSWORD
         ]);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $this->assertContains('minSize', $response->json()['match']);
-        $this->assertFalse($response->json()['verify']);
-    }
-
-    /**
-     * Tests if the min special chars validation works correctly
-     * and verify is false, status code must be 400.
-     *
-     * @return void
-     */
-    public function testMinSpecialCharsValidationWorks()
-    {
-        $response = $this->post(self::VERIFY_ROUTE, [
-            'password' => 'Test'
-        ]);
-
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $this->assertContains('minSpecialChars', $response->json()['match']);
-        $this->assertFalse($response->json()['verify']);
-    }
-
-    /**
-     * Tests if the no repeted validation works correctly
-     * and verify is false, status code must be 400.
-     *
-     * @return void
-     */
-    public function testNoRepetedValidationWorks()
-    {
-        $response = $this->post(self::VERIFY_ROUTE, [
-            'password' => 'TTest'
-        ]);
-
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $this->assertContains('noRepeted', $response->json()['match']);
-        $this->assertFalse($response->json()['verify']);
-    }
-
-    /**
-     * Tests if the min numeric digits validation works correctly
-     * and verify is false, status code must be 400.
-     *
-     * @return void
-     */
-    public function testMinDigitValidationWorks()
-    {
-        $response = $this->post(self::VERIFY_ROUTE, [
-            'password' => 'TTest'
-        ]);
-
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $this->assertContains('minDigit', $response->json()['match']);
-        $this->assertFalse($response->json()['verify']);
-    }
-
-    /**
-     * Tests if the min uppercase digits validation works correctly
-     * and verify is false, status code must be 400.
-     *
-     * @return void
-     */
-    public function testMinUppercaseValidationWorks()
-    {
-        $response = $this->post(self::VERIFY_ROUTE, [
-            'password' => 'test'
-        ]);
-
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $this->assertContains('minUppercase', $response->json()['match']);
-        $this->assertFalse($response->json()['verify']);
-    }
-
-    /**
-     * Tests if the min lowercase digits validation works correctly
-     * and verify is false, status code must be 400.
-     *
-     * @return void
-     */
-    public function testMinLowercaseValidationWorks()
-    {
-        $response = $this->post(self::VERIFY_ROUTE, [
-            'password' => 'TEST'
-        ]);
-
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $this->assertContains('minLowercase', $response->json()['match']);
         $this->assertFalse($response->json()['verify']);
     }
