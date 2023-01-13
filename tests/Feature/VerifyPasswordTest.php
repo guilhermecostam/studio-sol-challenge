@@ -124,4 +124,38 @@ class VerifyPasswordTest extends TestCase
         $this->assertContains('minDigit', $response->json()['match']);
         $this->assertFalse($response->json()['verify']);
     }
+
+    /**
+     * Tests if the min uppercase digits validation works correctly
+     * and verify is false, status code must be 400.
+     *
+     * @return void
+     */
+    public function testMinUppercaseValidationWorks()
+    {
+        $response = $this->post(self::VERIFY_ROUTE, [
+            'password' => 'test'
+        ]);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $this->assertContains('minUppercase', $response->json()['match']);
+        $this->assertFalse($response->json()['verify']);
+    }
+
+    /**
+     * Tests if the min lowercase digits validation works correctly
+     * and verify is false, status code must be 400.
+     *
+     * @return void
+     */
+    public function testMinLowercaseValidationWorks()
+    {
+        $response = $this->post(self::VERIFY_ROUTE, [
+            'password' => 'TEST'
+        ]);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $this->assertContains('minLowercase', $response->json()['match']);
+        $this->assertFalse($response->json()['verify']);
+    }
 }
